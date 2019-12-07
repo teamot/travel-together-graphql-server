@@ -1,0 +1,21 @@
+version: '3'
+services:
+  gql-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - db
+    restart: 'always'
+    volumes:
+      - ./:/tt-gql-server
+    ports:
+      - 4000:4000
+
+  db:
+    build:
+      context: ./other-dockerfiles/db
+      dockerfile: Dockerfile.dev
+    restart: 'always'
+    ports:
+      - 5432:5432

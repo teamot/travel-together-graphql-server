@@ -22,7 +22,7 @@ async function startServer() {
     playground: true,
   });
 
-  const port = process.env.PORT || 3000;
+  const port = process.env.PORT || 4000;
   const serverInfo = await server.listen(port);
   console.log(`Server is running: ${serverInfo.url}`);
 }
