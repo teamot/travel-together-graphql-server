@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { ApolloServer, gql } from 'apollo-server';
+import { connectDB } from './db/connection';
 
 const typeDefs = gql`
   type Query {
@@ -16,6 +17,7 @@ const resolvers = {
 };
 
 async function startServer() {
+  await connectDB();
   const server = new ApolloServer({
     typeDefs,
     resolvers,
