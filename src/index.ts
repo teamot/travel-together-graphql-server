@@ -5,10 +5,10 @@ dotenv.config({ path: path.join(__dirname, '..', 'env', '.env') });
 
 import { ApolloServer } from 'apollo-server';
 import { connectDB } from './db/connection';
-import { OAuthResolver } from './modules/OAuth/resolver';
+import { OAuthResolver } from './modules/oauth/resolver';
 import { buildSchema } from 'type-graphql';
 import { generateContext } from './context';
-import { UserResolver } from './modules/User/resolver';
+import { UserResolver } from './modules/user/resolver';
 import { authChecker } from './utils/auth-checker';
 
 async function startServer() {

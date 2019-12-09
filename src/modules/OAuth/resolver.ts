@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Arg } from 'type-graphql';
 import { OAuthLoginResponse, OAuthLoginInput } from './type';
 import { getAccessTokenInfo, getUser, UserProperties } from '../../utils/oauth/kakao';
-import { Account } from '../User/models/user';
+import { Account } from '../user/models/user';
 import { generateAccessToken, generateRefreshToken } from '../../utils/token';
 import { AuthenticationError } from 'apollo-server';
 

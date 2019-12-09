@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, BaseEntity } from 'typeorm';
-import { OAuthServers } from '../../OAuth/type';
+import { OAuthServers } from '../../oauth/type';
 
 @Entity('account')
 export class Account extends BaseEntity {

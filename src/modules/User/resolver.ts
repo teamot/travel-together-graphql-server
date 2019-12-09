@@ -2,7 +2,6 @@ import { Resolver, Query, Mutation, Arg, Ctx, Authorized, ID } from 'type-graphq
 import { User, GetUserArgs } from './type';
 import { Account } from './models/user';
 import { Context } from '../../context';
-import { AuthenticationError, UserInputError } from 'apollo-server';
 
 @Resolver()
 export class UserResolver {
