@@ -34,7 +34,7 @@ export class TravelRoom {
 export class CreateTravelRoomInput {
   @MinLength(2)
   @MaxLength(64)
-  @Field()
+  @Field({ description: '여행 이름' })
   name: string;
 
   @Field({ nullable: true, description: '여행이 시작되는 날' })
