@@ -1,9 +1,8 @@
-import { Resolver, Query, FieldResolver, Root } from 'type-graphql';
-import { TravelRoom } from './type';
+import { Resolver, Query, FieldResolver, Root, Mutation, Arg } from 'type-graphql';
+import { getConnection } from 'typeorm';
+import { TravelRoom, CreateTravelRoomInput } from './type';
 import { Country } from '../country/type';
 import { TravelRoom as TravelRoomModel } from './models/travel-room';
-import { Country as CountryModel } from '../country/models/country';
-import { Account } from '../user/models/user';
 import { User } from '../user/type';
 
 @Resolver(type => TravelRoom)
@@ -22,5 +21,22 @@ export class TravelRoomResolver {
   @FieldResolver(type => [User])
   async getMembers(@Root() travelRoom: TravelRoom): Promise<User[]> {
     return await travelRoom.members;
+  }
+
+  @Mutation(returns => TravelRoom)
+  async createTravelRoom(@Arg('travelRoom') travelRoom: CreateTravelRoomInput): Promise<TravelRoom> {
+    const createdTravelRoom = await TravelRoomModel.create({
+      name: travelRoom.name,
+      startDate: travelRoom.startDate,
+      endDate: travelRoom.endDate,
+    }).save();
+
+    await getConnection()
+      .createQueryBuilder()
+      .relation(TravelRoomModel, 'countries')
+      .of({ id: createdTravelRoom.id })
+      .add(travelRoom.countryCodes);
+
+    return createdTravelRoom;
   }
 }

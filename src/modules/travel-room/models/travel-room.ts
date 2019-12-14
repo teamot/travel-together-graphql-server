@@ -7,7 +7,7 @@ export class TravelRoom extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ length: 64 })
   name: string;
 
   @Column('date', { nullable: true })

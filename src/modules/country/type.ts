@@ -1,5 +1,18 @@
-import { ObjectType, Field, ID, InputType } from 'type-graphql';
+import { ObjectType, Field, ID, InputType, registerEnumType } from 'type-graphql';
 import { MaxLength, ArrayMaxSize } from 'class-validator';
+
+export enum CountryCodes {
+  KR = 'KR',
+  US = 'US',
+  JP = 'JP',
+  CN = 'CN',
+  FR = 'FR',
+}
+
+registerEnumType(CountryCodes, {
+  name: 'CountryCodes',
+  description: '등록 가능한 국가들의 코드입니다.',
+});
 
 @ObjectType()
 export class Country {
