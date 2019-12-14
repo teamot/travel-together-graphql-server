@@ -20,8 +20,6 @@ function getAccessToken(req: e.Request): string | undefined {
 
 export async function generateContext(expressContext: ExpressContext): Promise<Context> {
   const token = getAccessToken(expressContext.req);
-  console.log('token:', token);
-
   const context: Context = {};
   if (token) {
     try {
