@@ -10,12 +10,14 @@ import { buildSchema } from 'type-graphql';
 import { generateContext } from './context';
 import { UserResolver } from './modules/user/resolver';
 import { authChecker } from './utils/auth-checker';
+import { CountryResolver } from './modules/country/resolver';
+import { TravelRoomResolver } from './modules/travel-room/resolver';
 
 async function startServer() {
   await connectDB();
 
   const schema = await buildSchema({
-    resolvers: [OAuthResolver, UserResolver],
+    resolvers: [OAuthResolver, UserResolver, CountryResolver, TravelRoomResolver],
     authChecker,
   });
 
