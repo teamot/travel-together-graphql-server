@@ -4,6 +4,7 @@ import { TravelRoom, CreateTravelRoomInput } from './type';
 import { Country } from '../country/type';
 import { TravelRoom as TravelRoomModel } from './models/travel-room';
 import { User } from '../user/type';
+import { getSignedUrl } from '../../utils/aws/s3/signed-url-generator';
 
 @Resolver(type => TravelRoom)
 export class TravelRoomResolver {
@@ -21,6 +22,11 @@ export class TravelRoomResolver {
   @FieldResolver(type => [User])
   async getMembers(@Root() travelRoom: TravelRoom): Promise<User[]> {
     return await travelRoom.members;
+  }
+
+  @Query(returns => String)
+  async coverImageUploadUrl(@Arg('travelRoomId') travelRoomId: string): Promise<string> {
+    return getSignedUrl(travelRoomId, 'travel-room/cover/origin');
   }
 
   @Mutation(returns => TravelRoom)
