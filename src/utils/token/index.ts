@@ -29,7 +29,7 @@ interface TokenInfo {
  *    sub: subject
  * }
  */
-export function generateAccessToken(userId: string, expInMinutes: number = 15): Promise<TokenInfo> {
+export function generateAccessToken(userId: string, expInMinutes: number = 500): Promise<TokenInfo> {
   return new Promise((resolve, reject) => {
     const payload: AccessTokenPayload = {
       exp: Math.floor(Date.now() / 1000) + expInMinutes * 60,

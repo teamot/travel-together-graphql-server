@@ -29,8 +29,7 @@ export class Account extends BaseEntity {
     type => TravelRoom,
     (travelRoom: TravelRoom) => travelRoom.members,
   )
-  @JoinTable({ name: 'travel-room_account' })
-  joinedTravelRooms: Promise<TravelRoom[]>;
+  joinedTravelRooms: TravelRoom[];
 
   @CreateDateColumn()
   createdDate: Date;

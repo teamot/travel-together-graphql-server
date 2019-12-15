@@ -21,10 +21,10 @@ export class TravelRoom {
   coverImageUrl: string;
 
   @Field(type => [Country])
-  countries: Promise<Country[]>;
+  countries: Country[];
 
   @Field(type => [User])
-  members: Promise<User[]>;
+  members: User[];
 
   @Field()
   createdDate: Date;
