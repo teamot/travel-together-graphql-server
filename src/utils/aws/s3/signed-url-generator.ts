@@ -15,6 +15,7 @@ export function getSignedUrl(id: Id, prefix: Prefix): Promise<string> {
   const params = {
     Bucket: bucketName,
     Key: path.join(prefix, id),
+    Expires: 5 * 60, // 5분
     ContentType: 'image/jpeg',
   };
 
