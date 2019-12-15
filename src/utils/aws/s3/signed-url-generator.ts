@@ -1,20 +1,15 @@
-import { s3, bucketName } from './connect';
 import path from 'path';
+import { s3, bucketName } from './connect';
+import { getObjectKey, Id } from './object-key';
 
-export type Prefix = 'travel-room/cover/origin';
+export enum Targets {
+  TRAVEL_ROOM_COVER_ORIGIN = 'travel-room/cover/origin',
+}
 
-type Id = string | string[] | number | number[];
-
-export function getSignedUrl(id: Id, prefix: Prefix): Promise<string> {
-  if (typeof id === 'number') {
-    id = '' + id;
-  } else if (Array.isArray(id)) {
-    id = id.join('-');
-  }
-
+export function getSignedUrl(id: Id, target: Targets): Promise<string> {
   const params = {
     Bucket: bucketName,
-    Key: path.join(prefix, id),
+    Key: getObjectKey(id, target),
     Expires: 5 * 60, // 5분
     ContentType: 'image/jpeg',
   };

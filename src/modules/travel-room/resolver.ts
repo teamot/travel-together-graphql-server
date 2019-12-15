@@ -4,7 +4,7 @@ import { TravelRoom, CreateTravelRoomInput } from './type';
 import { Country } from '../country/type';
 import { TravelRoom as TravelRoomModel } from './models/travel-room';
 import { User } from '../user/type';
-import { getSignedUrl } from '../../utils/aws/s3/signed-url-generator';
+import { getSignedUrl, Targets } from '../../utils/aws/s3/signed-url-generator';
 
 @Resolver(type => TravelRoom)
 export class TravelRoomResolver {
@@ -26,7 +26,7 @@ export class TravelRoomResolver {
 
   @Query(returns => String)
   async coverImageUploadUrl(@Arg('travelRoomId') travelRoomId: string): Promise<string> {
-    return getSignedUrl(travelRoomId, 'travel-room/cover/origin');
+    return getSignedUrl(travelRoomId, Targets.TRAVEL_ROOM_COVER_ORIGIN);
   }
 
   @Mutation(returns => TravelRoom)
