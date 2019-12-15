@@ -1,22 +1,36 @@
-import { s3, bucketName } from './connect';
 import path from 'path';
+import { s3, bucketName } from './connect';
+import { getObjectKey, Id, FileFormats } from './object-key';
 
-export type Prefix = 'travel-room/cover/origin';
+export enum Targets {
+  TRAVEL_ROOM_COVER_ORIGIN = 'travel-room/cover/origin',
+}
 
-type Id = string | string[] | number | number[];
+export interface SignedUrlData {
+  bucketName: string;
+  key: string;
+  expires?: number;
+  contentType: string;
+  signedUrl: string;
+}
 
-export function getSignedUrl(id: Id, prefix: Prefix): Promise<string> {
-  if (typeof id === 'number') {
-    id = '' + id;
-  } else if (Array.isArray(id)) {
-    id = id.join('-');
-  }
+export async function getSignedUrl(id: Id, target: Targets, fileFormat: FileFormats): Promise<SignedUrlData> {
+  const key = getObjectKey(id, target, fileFormat);
+  const expires = 5 * 60; // 5분
+  const contentType = 'image/jpeg';
 
-  const params = {
+  const signedUrl = await s3.getSignedUrlPromise('putObject', {
     Bucket: bucketName,
-    Key: path.join(prefix, id),
-    ContentType: 'image/jpeg',
-  };
+    Key: key,
+    Expires: expires,
+    ContentType: contentType,
+  });
 
-  return s3.getSignedUrlPromise('putObject', params);
+  return {
+    bucketName,
+    key,
+    expires,
+    contentType,
+    signedUrl,
+  };
 }

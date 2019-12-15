@@ -9,11 +9,9 @@ if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY) {
 export const signatureVersion = 'v4';
 export const region = 'us-east-1';
 export const bucketName = 'travel-together2';
-export const endpoint = `${bucketName}.s3.amazonaws.com`;
 export const s3 = new AWS.S3({
   signatureVersion,
   region,
-  endpoint,
   accessKeyId: AWS_ACCESS_KEY_ID,
   secretAccessKey: AWS_SECRET_ACCESS_KEY,
 });

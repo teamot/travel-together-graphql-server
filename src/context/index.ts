@@ -1,9 +1,11 @@
 import { ExpressContext } from 'apollo-server-express/dist/ApolloServer';
 import e from 'express';
-import { extractPayload } from './utils/token';
+import { newDataLoaders } from './dataLoaders';
+import { extractPayload } from '../utils/token';
 
 export interface Context {
-  userId?: string;
+  userId: string;
+  dataLoaders: ReturnType<typeof newDataLoaders>;
 }
 
 function getAccessToken(req: e.Request): string | undefined {
@@ -20,7 +22,7 @@ function getAccessToken(req: e.Request): string | undefined {
 
 export async function generateContext(expressContext: ExpressContext): Promise<Context> {
   const token = getAccessToken(expressContext.req);
-  const context: Context = {};
+  const context: Context = { userId: '', dataLoaders: newDataLoaders() };
   if (token) {
     try {
       const payload = await extractPayload(token);
@@ -28,6 +30,5 @@ export async function generateContext(expressContext: ExpressContext): Promise<C
     } catch (err) {}
   }
 
-  console.log('context:', context);
   return context;
 }

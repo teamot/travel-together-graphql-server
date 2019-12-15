@@ -27,18 +27,20 @@ export class OAuthResolver {
     ]);
 
     const profile = user.kakao_account.profile;
-    const account = new Account();
-    account.name = profile.nickname;
-    account.oauth = resourceServer;
-    account.oauthId = oauthId;
-    account.profileImageUrl = profile.profile_image_url;
-    account.thumbnailImageUrl = profile.thumbnail_image;
-    account.refreshToken = await generateRefreshToken(oauthInfo);
+    let account = await Account.findOne({ where: { oauthId } });
+    if (!account) {
+      const newAccount = new Account();
+      newAccount.name = profile.nickname;
+      newAccount.oauth = resourceServer;
+      newAccount.oauthId = oauthId;
+      newAccount.profileImageUrl = profile.profile_image_url;
+      newAccount.thumbnailImageUrl = profile.thumbnail_image;
+      newAccount.refreshToken = await generateRefreshToken(oauthInfo);
+      account = await newAccount.save();
+    }
 
-    const createdAccount = await account.save();
+    const { token, payload } = await generateAccessToken(account.id);
 
-    const { token, payload } = await generateAccessToken(createdAccount.id);
-
-    return { accessToken: token, exp: payload.exp, refreshToken: createdAccount.refreshToken };
+    return { accessToken: token, exp: payload.exp, refreshToken: account.refreshToken };
   }
 }

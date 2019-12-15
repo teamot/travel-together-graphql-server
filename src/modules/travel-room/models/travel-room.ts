@@ -1,4 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, CreateDateColumn, BaseEntity } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  JoinTable,
+  CreateDateColumn,
+  BaseEntity,
+  getConnection,
+} from 'typeorm';
 import { Country } from '../../country/models/country';
 import { Account } from '../../user/models/user';
 
@@ -24,15 +33,21 @@ export class TravelRoom extends BaseEntity {
     (country: Country) => country.travelRooms,
   )
   @JoinTable({ name: 'travel-room_country' })
-  countries: Promise<Country[]>;
+  countries: Country[];
 
   @ManyToMany(
     type => Account,
     (account: Account) => account.joinedTravelRooms,
   )
   @JoinTable({ name: 'travel-room_account' })
-  members: Promise<Account[]>;
+  members: Account[];
 
   @CreateDateColumn()
   createdDate: Date;
+
+  async getCountries(): Promise<Country[]> {
+    const travelRoom = await TravelRoom.findOne(this.id, { relations: ['countries'] });
+    travelRoom?.countries;
+    return [];
+  }
 }
