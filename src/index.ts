@@ -3,27 +3,24 @@ import path from 'path';
 import dotenv from 'dotenv';
 dotenv.config({ path: path.join(__dirname, '..', 'env', '.env') });
 
+import { makeSchema } from 'nexus';
+import { prisma } from './generated/prisma-client';
 import { ApolloServer } from 'apollo-server';
-import { connectDB } from './db/connection';
-import { OAuthResolver } from './modules/oauth/resolver';
-import { buildSchema } from 'type-graphql';
-import { generateContext } from './context';
-import { UserResolver } from './modules/user/resolver';
-import { authChecker } from './utils/auth-checker';
-import { CountryResolver } from './modules/country/resolver';
-import { TravelRoomResolver } from './modules/travel-room/resolver';
+
+import * as types from './resolvers';
 
 async function startServer() {
-  await connectDB();
-
-  const schema = await buildSchema({
-    resolvers: [OAuthResolver, UserResolver, CountryResolver, TravelRoomResolver],
-    authChecker,
+  const schema = makeSchema({
+    types,
+    outputs: {
+      schema: path.resolve(__dirname, './generated/nexus/schema.gql'),
+      typegen: path.resolve(__dirname, './generated/nexus/types.d.ts'),
+    },
   });
 
   const server = new ApolloServer({
     schema,
-    context: generateContext,
+    context: { prisma },
     playground: true,
     debug: true,
   });

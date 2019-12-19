@@ -1,0 +1,10 @@
+endpoint: http://prisma:4466
+datamodel: datamodel.prisma.gql
+
+generate:
+  - generator: typescript-client
+    output: ../src/generated/prisma-client/
+
+hooks:
+  post-deploy:
+    - prisma generate

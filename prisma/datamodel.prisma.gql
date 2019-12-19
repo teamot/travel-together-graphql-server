@@ -1,0 +1,22 @@
+type Account {
+  id: ID! @id
+  name: String!
+}
+
+type TravelRoom {
+  id: ID! @id
+
+  name: String!
+
+  startDate: DateTime!
+
+  endDate: DateTime!
+
+  coverImageUrl: String
+
+  countries: String!
+
+  members: [Account!]!
+
+  createdAt: DateTime! @createdAt
+}
