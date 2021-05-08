@@ -22,7 +22,7 @@
     "request": "^2.88.0",
     "request-promise": "^4.2.5",
     "type-graphql": "^0.17.5",
-    "typeorm": "^0.2.21",
+    "typeorm": "^0.2.25",
     "typescript": "^3.7.3"
   },
   "devDependencies": {
